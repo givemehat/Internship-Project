@@ -1,0 +1,14 @@
+{
+    "status": "APPROVED_AND_FROZEN",
+    "total_cycles": 2705,
+    "total_windows": 2404,
+    "tensor_shape": [
+        2404,
+        10,
+        51,
+        3
+    ],
+    "train_windows": 1002,
+    "val_windows": 697,
+    "test_windows": 705
+}
