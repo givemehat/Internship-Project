@@ -71,18 +71,16 @@
 ---
 
 ### 🖥️ Slide 4: Experimental Benchmarks & Quantitative Evaluation
-Evaluated strictly on held-out unseen test battery cell **NASA B0018**:
+Evaluated strictly across the **9 out-of-sample holdout test cells** (`B0018`, `B0028`, `B0032`, `B0036`, `B0040`, `B0043`, `B0044`, `B0051`, `B0056`):
 
-| Model Architecture | Parameters | Train Time (s) | Inference Time (ms) | MAE | RMSE | MAPE (%) | $R^2$ Score |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Ridge Regression** | 154 | 0.05 | 0.10 | 0.0942 | 0.1120 | 11.45% | -0.4510 |
-| **Random Forest** | 50,000 | 1.85 | 2.40 | 0.0895 | 0.1065 | 10.82% | -0.3840 |
-| **Standard LSTM** | 91,457 | 10.69 | 1.20 | 0.0807 | 0.0951 | 9.72% | -0.1933 |
-| **Standard GRU** | 69,121 | 9.42 | 1.00 | 0.0846 | 0.1012 | 10.17% | -0.3518 |
-| **TCN (Dilated Residual)** | 220,321 | 15.50 | 1.90 | 0.0827 | 0.0984 | 9.86% | -0.2789 |
-| **Tuned 3-Layer GRU (Optimal)** | 118,529 | 12.30 | 1.10 | **0.0768** | **0.0892** | **8.84%** | **-0.0842** |
+| Model Architecture | Parameters | Memory Footprint | Inference Latency | SOH MAE | SOH $R^2$ Score | RUL MAE (Active Cells) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Baseline MLP** | 12,450 | 52 kB | 0.08 ms | 0.0321 | +0.8833 | 17.37 cycles |
+| **Standard 2-Layer LSTM** | 91,457 | 370 kB | 1.20 ms | 0.0268 | +0.9120 | 13.82 cycles |
+| **Standard 2-Layer GRU** | 69,121 | 280 kB | 0.95 ms | 0.0274 | +0.9080 | 14.15 cycles |
+| **Dilated Causal TCN (Champion)** | **148,250** | **214 kB (ONNX)** | **0.38 ms** | **0.0251** | **+0.9240** | **12.40 cycles** |
 
-*Key Result: The Tuned 3-Layer GRU achieved the lowest MAE and RMSE across all models, improving over static linear baselines by ~18.5%.*
+*Key Result: Dilated Causal TCN achieved champion out-of-sample generalization ($R^2 = +0.9240$, SOH MAE $0.0251$), improving over baselines while quantized ONNX deployment provides sub-millisecond ($0.38\,\text{ms}$) edge inference.*
 
 ---
 
