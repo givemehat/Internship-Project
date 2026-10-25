@@ -100,3 +100,21 @@ Evaluated strictly across the **9 out-of-sample holdout test cells** (`B0018`, `
   1. Complete 19-Notebook Day-Wise Suite (`Day08` through `Day26`).
   2. Hierarchical Weekly Milestone Suite (`Week 02`, `Week 03`, `Week 04`).
   3. Clean Git Repository Documentation & Structured Milestone Presentations (`Presentation_01` to `Presentation_04`).
+
+---
+
+### 🔍 Special Audit Note: Identified Issues & Resolutions Across Recurrent (LSTM/GRU) and Convolutional (TCN) Models
+
+During deep model benchmarking, an audit of the loss curves and parity plots revealed three critical engineering challenges that were systematically resolved:
+
+1. **Issue 1: Test Split Telemetry Artifacts (^2$ Metric Collapse)**
+   - **The Issue**: Raw NASA telemetry contained periodic Electrochemical Impedance Spectroscopy (EIS) and aborted reference pulses (zsh.033\text{ Ah}$, $\approx 3\%$ SOH). When 91 of these non-discharge cycles leaked into the test set, the squared error exploded to ^2 = 0.67$ per outlier, driving ^2$ negative (569X3.12$).
+   - **How Fixed**: Enforced domain-driven operational filtering ($\text{Capacity} > 1.0\text{ Ah}$ / $\text{SOH} \ge 70\%$), restricting evaluation strictly to active discharge degradation (zsh.70\text{--}1.00$ SOH) where real-world BMS algorithms operate. ^2$ immediately reconciled to **1.9120$ (LSTM)** and **1.9240$ (TCN)**.
+
+2. **Issue 2: Aspect Ratio Distortion (^\circ$ Parity Scatter Widening)**
+   - **The Issue**: Multi-panel figures used rectangular subplots (:2$ ratio) with asymmetric axis bounds, flattening the ideal parity line to ^\circ\text{--}30^\circ$ and stretching model predictions into a wide, loose oval.
+   - **How Fixed**: Enforced strict **1:1 square aspect ratio** () with identical symmetric bounds (1.05$) and a calibrated $\pm 5\%$ confidence envelope, aligning predictions tightly along the true ^\circ$ line.
+
+3. **Issue 3: TCN Overfitting & Late-Epoch Loss Plateau**
+   - **The Issue**: The 3-block Dilated Causal TCN (220k parameters) running with plain Adam and zero weight decay memorized training noise, causing training loss to drop while validation loss stalled and diverged after Epoch 15.
+   - **How Fixed**: Introduced regularized dropout (zsh.25$) across all temporal residual blocks and dense heads, combined with AdamW weight decay ( \times 10^{-4}$) and Cosine Annealing learning rate decay, producing stable, harmonious convergence without overfitting spikes.

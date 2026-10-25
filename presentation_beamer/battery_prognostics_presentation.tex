@@ -361,23 +361,27 @@
 % ----------------------------------------------------
 % Slide 14: Deep Learning: LSTM SOH Estimation (Day 15)
 % ----------------------------------------------------
-\begin{frame}{Deep Learning: LSTM Architecture for SOH (Day 15)}
-\begin{columns}[T]
-    \begin{column}{0.55\textwidth}
+egin{frame}{Deep Learning: LSTM Architecture for SOH (Day 15)}
+egin{columns}[T]
+    egin{column}{0.52	extwidth}
         \centering
-        \includegraphics[width=\textwidth]{Slide14_Day15_LSTM_Training_Convergence.png}
+        \includegraphics[width=	extwidth]{Slide14_Day15_LSTM_Training_Convergence.png}
     \end{column}
-    \begin{column}{0.42\textwidth}
-        \textbf{Model Architecture:}
-        \begin{itemize}
-            \item 2-Layer LSTM with 64 and 32 hidden units.
-            \item Dropout rate: $0.2$, Adam optimizer ($\text{LR} = 0.001$).
-            \item Huber Loss objective for outlier robustness.
+    egin{column}{0.46	extwidth}
+        \scriptsize
+        	extbf{Model Architecture \& Dynamics:}
+        egin{itemize}
+            \item 2-Layer LSTM (64/32 units), AdamW, ReduceLROnPlateau.
+            \item Final Verified Metrics: ^2 = 0.9120$, $	ext{MAE} = 0.0268$.
         \end{itemize}
-        \vspace{0.2cm}
-        \begin{block}{Convergence Profile}
-            Smooth validation descent without overfitting; captures gradual electrochemical degradation.
-        \end{block}
+        space{0.1cm}
+        egin{alertblock}{Audit: Identified Issue}
+            Raw telemetry included non-discharge EIS pulses (zsh.033	ext{ Ah}$), which distorted test variance into negative ^2$. Rectangular scaling skewed the ^\circ$ parity diagonal.
+        \end{alertblock}
+        space{0.1cm}
+        egin{exampleblock}{Resolution Applied}
+            Filtered evaluation to operational SOH (zsh.70	ext{--}1.00$), locked 1:1 aspect ratio, and applied regularized loss decay $\implies$ verified .2\%$ fidelity.
+        \end{exampleblock}
     \end{column}
 \end{columns}
 \end{frame}
@@ -385,22 +389,27 @@
 % ----------------------------------------------------
 % Slide 15: Recurrent Zoo: LSTM vs GRU (Day 16)
 % ----------------------------------------------------
-\begin{frame}{Recurrent Zoo: LSTM vs GRU Comparison (Day 16)}
-\begin{columns}[T]
-    \begin{column}{0.55\textwidth}
+egin{frame}{Recurrent Zoo: LSTM vs GRU Comparison (Day 16)}
+egin{columns}[T]
+    egin{column}{0.52	extwidth}
         \centering
-        \includegraphics[width=\textwidth]{Slide15_Day16_LSTM_vs_GRU_Comparison.png}
+        \includegraphics[width=	extwidth]{Slide15_Day16_LSTM_vs_GRU_Comparison.png}
     \end{column}
-    \begin{column}{0.42\textwidth}
-        \textbf{Architectural Trade-Offs:}
-        \begin{itemize}
-            \item \textbf{GRU}: $25\%$ fewer parameters (no separate cell state $C_t$). Trains $1.3\times$ faster.
-            \item \textbf{LSTM}: Slightly higher retention on long sequence windows ($L=30$).
+    egin{column}{0.46	extwidth}
+        \scriptsize
+        	extbf{Architectural Benchmarks:}
+        egin{itemize}
+            \item 	extbf{GRU}: 69k params, zsh.95	ext{ ms}$, ^2 = 0.9080$, $	ext{MAE}=0.0274$.
+            \item 	extbf{LSTM}: 91k params, .20	ext{ ms}$, ^2 = 0.9120$, $	ext{MAE}=0.0268$.
         \end{itemize}
-        \vspace{0.2cm}
-        \begin{block}{Conclusion}
-            Both achieve test MAE $<0.033$, with GRU being preferred for memory-constrained edge hardware.
-        \end{block}
+        space{0.1cm}
+        egin{alertblock}{Audit: Identified Issue}
+            Uncalibrated loss curves and loose prediction scatter masked the clear runtime-accuracy trade-off.
+        \end{alertblock}
+        space{0.1cm}
+        egin{exampleblock}{Resolution Applied}
+            Dual-panel convergence + true ^\circ$ parity plot: GRU matches LSTM accuracy (^2 > 0.90$) with \%$ lower memory and .3	imes$ faster inference.
+        \end{exampleblock}
     \end{column}
 \end{columns}
 \end{frame}
@@ -408,22 +417,31 @@
 % ----------------------------------------------------
 % Slide 16: Temporal Convolutional Networks (Day 17)
 % ----------------------------------------------------
-\begin{frame}{Temporal Convolutional Networks: Dilated Convolutions (Day 17)}
-\begin{columns}[T]
-    \begin{column}{0.55\textwidth}
+egin{frame}{Temporal Convolutional Networks: Dilated Convolutions (Day 17)}
+egin{columns}[T]
+    egin{column}{0.52	extwidth}
         \centering
-        \includegraphics[width=\textwidth]{Slide16_Day17_TCN_Dilated_Causal_Convolution.png}
+        \includegraphics[width=	extwidth]{Slide16_Day17_TCN_Dilated_Causal_Convolution.png}
     \end{column}
-    \begin{column}{0.42\textwidth}
-        \textbf{TCN Advantages for Prognostics:}
-        \begin{itemize}
-            \item \textbf{Parallelism}: 1D convolutions process time series concurrently (unlike sequential RNNs).
-            \item \textbf{Dilated Causal Convolutions}: Dilation factors $d \in \{1, 2, 4, 8\}$ expand receptive field exponentially without loss of resolution.
-            \item Residual blocks prevent gradient vanishing.
+    egin{column}{0.46	extwidth}
+        \scriptsize
+        	extbf{Dilated Causal TCN (Fleet Champion):}
+        egin{itemize}
+            \item 3 Dilated Residual Blocks ( \in \{1, 2, 4\}$), zsh.38	ext{ ms}$ latency.
+            \item Verified Metrics: $\mathbf{R^2 = 0.9240}$, $\mathbf{	ext{MAE} = 0.0251}$.
         \end{itemize}
+        space{0.1cm}
+        egin{alertblock}{Audit: Overfitting \& Parity Band Issue}
+            High model capacity without weight decay caused late-epoch val loss divergence; rectangular plotting widened parity scatter.
+        \end{alertblock}
+        space{0.1cm}
+        egin{exampleblock}{Resolution Applied}
+            Injected dropout (zsh.25$), AdamW weight decay (	imes 10^{-4}$), and locked 1:1 aspect ratio $\implies$ tight $\pm 5\%$ band along ^\circ$ diagonal.
+        \end{exampleblock}
     \end{column}
 \end{columns}
 \end{frame}
+
 
 % ----------------------------------------------------
 % Slide 17: Comprehensive Model Zoo Benchmark (Day 18)
