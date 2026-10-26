@@ -64,44 +64,73 @@ def generate_day10_charts():
     # Form distinct temperature group labels
     discharge['Cell_Type'] = 'Operating Temp: ' + discharge['ambient_temperature'].astype(str) + '°C'
     
-    # --- CHART 04: Capacity Fade Across Operating Temperatures (2-Column Legend) ---
-    g = sns.FacetGrid(
-        discharge,
-        col="Cell_Type",
-        col_wrap=3,
-        height=4.6,
-        aspect=1.1,
-        sharex=False,
-        sharey=True
-    )
-    g.map_dataframe(
-        sns.lineplot,
-        x="cycle_index",
-        y="Capacity",
-        hue="battery_id",
-        palette="tab20",
-        alpha=0.85,
-        lw=1.5
-    )
-    g.add_legend()
-    # 2-column legend positioned cleanly on the right with no overlap
-    sns.move_legend(
-        g,
-        loc="center left",
-        bbox_to_anchor=(1.01, 0.5),
-        ncol=2,
-        title="Battery Cell ID",
-        frameon=True,
-        fontsize=8,
-        title_fontsize=9.5
-    )
-    g.set_axis_labels("Discharge Cycle Number", "Discharge Capacity (Ah)", fontsize=11, fontweight='medium')
-    g.set_titles(col_template="{col_name}", size=12, weight='bold')
-    plt.subplots_adjust(top=0.86, right=0.80)
-    g.fig.suptitle("Battery Discharge Capacity Degradation across Operating Temperatures", fontsize=14, fontweight='bold', y=0.97)
+    # --- CHART 04: Capacity Fade Across Operating Temperatures (Large Dedicated Master Legend in Panel 6) ---
+    temp_order = [4, 22, 24, 43, 44]
+    temp_titles = {
+        4: 'Operating Temp: 4°C (Cold Fleet)',
+        22: 'Operating Temp: 22°C (Room Fleet)',
+        24: 'Operating Temp: 24°C (Standard Baseline)',
+        43: 'Operating Temp: 43°C (Elevated Thermal)',
+        44: 'Operating Temp: 44°C (Accelerated Stress)'
+    }
     
-    save_plot_variants(g.fig, "04_Day10_Capacity_Fade_By_Ambient_Temperature.png", "Slide06_Day10_Capacity_Fade_By_Temperature.png")
-    plt.close(g.fig)
+    fig, axes = plt.subplots(2, 3, figsize=(16, 9.5), sharey=True)
+    axes_flat = axes.flatten()
+    
+    all_batteries = sorted(discharge['battery_id'].unique())
+    palette = sns.color_palette('tab20', 20) + sns.color_palette('tab20b', 14)
+    color_map = {b: palette[i % len(palette)] for i, b in enumerate(all_batteries)}
+    
+    for i, t in enumerate(temp_order):
+        ax = axes_flat[i]
+        sub = discharge[discharge['ambient_temperature'] == t]
+        cells_in_t = sorted(sub['battery_id'].unique())
+        
+        for b_id in cells_in_t:
+            grp = sub[sub['battery_id'] == b_id]
+            ax.plot(grp['cycle_index'], grp['Capacity'], label=b_id, color=color_map[b_id], lw=2.0, alpha=0.90)
+            
+        ax.set_title(f"{temp_titles[t]} | {len(cells_in_t)} Cells", fontsize=12.5, fontweight='bold', pad=10, color='#1a237e')
+        ax.set_xlabel('Discharge Cycle Number', fontsize=11, fontweight='bold')
+        if i % 3 == 0:
+            ax.set_ylabel('Discharge Capacity (Ah)', fontsize=11.5, fontweight='bold')
+        ax.grid(True, linestyle='--', alpha=0.6)
+        ax.set_ylim(0.95, 2.60)
+        ax.tick_params(labelsize=10.5)
+        
+    # Dedicated Panel 6 for Large, High-Contrast Master Legend
+    ax_legend = axes_flat[5]
+    ax_legend.axis('off')
+    
+    handles = [plt.Line2D([0], [0], color=color_map[b], lw=3.0) for b in all_batteries]
+    leg = ax_legend.legend(
+        handles, all_batteries,
+        title='Battery Cell IDs (All 34 Cells)',
+        title_fontsize=13,
+        fontsize=11,
+        ncol=3,
+        loc='center',
+        frameon=True,
+        facecolor='#ffffff',
+        edgecolor='#90a4ae',
+        framealpha=1.0,
+        columnspacing=1.2,
+        handlelength=2.2,
+        handletextpad=0.6,
+        borderpad=1.2,
+        labelspacing=0.4
+    )
+    leg.get_title().set_fontweight('bold')
+    leg.get_title().set_color('#0d47a1')
+    
+    rect = plt.Rectangle((0.02, 0.02), 0.96, 0.96, fill=True, facecolor='#f8fafd', edgecolor='#cfd8dc', lw=1.5, transform=ax_legend.transAxes, zorder=0)
+    ax_legend.add_patch(rect)
+    
+    fig.suptitle('Battery Discharge Capacity Degradation Across Operating Temperatures (NASA 34-Cell Fleet)', fontsize=15.5, fontweight='bold', y=0.98, color='#0d47a1')
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    
+    save_plot_variants(fig, "04_Day10_Capacity_Fade_By_Ambient_Temperature.png", "Slide06_Day10_Capacity_Fade_By_Temperature.png")
+    plt.close(fig)
 
     # --- CHART 05A: Discharge Capacity vs Cycle Index ---
     fig_cap, ax_cap = plt.subplots(figsize=(11, 5.5))
