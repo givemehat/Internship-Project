@@ -1,0 +1,28 @@
+# Presentation Image Assets & Slide Mapping Guide
+
+This folder contains high-resolution (300 DPI), publication-grade visual assets generated directly from verified project data and experimental logs for **Battery State of Health (SOH) Estimation and Remaining Useful Life (RUL) Prognostics**.
+
+Repository Root: [givemehat/ONLINETIHIITG](https://github.com/givemehat/ONLINETIHIITG)  
+Assets Directory: [presentation_assets](https://github.com/givemehat/ONLINETIHIITG/tree/main/presentation_assets)
+
+---
+
+## Complete Slide-by-Slide Visual Mapping
+
+| Slide # & Title | Image Filename | What It Shows / Key Insight | Direct GitHub Link |
+| :--- | :--- | :--- | :--- |
+| **Slide 3: Degradation Dynamics** | `Slide03_Capacity_Regeneration_Rebound_Zoom.png` | Close-up of capacity rebound spikes occurring during rest intervals between discharge cycles. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide03_Capacity_Regeneration_Rebound_Zoom.png) |
+| **Slide 9: Why No BiLSTM** | `Slide09_Why_No_BiLSTM_Causality_Violation.png` | Causal forward pass vs. unobserved backward pass, demonstrating why BiLSTM violates real-time online BMS causality. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide09_Why_No_BiLSTM_Causality_Violation.png) |
+| **Slide 12: Fleet Capacity Fade** | `Slide12_NASA_Fleet_Capacity_Fade_By_Temperature.png` | 6-panel publication chart of all 34 NASA cells across 4°C, 22°C, 24°C, 43°C, and 44°C with master legend. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide12_NASA_Fleet_Capacity_Fade_By_Temperature.png) |
+| **Slide 13: SOH Trajectories** | `Slide13_SOH_Degradation_Trajectories.png` | SOH (%) degradation curves across cycle indices with 85% healthy, 80% warning, and 70% EOL failure boundaries. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide13_SOH_Degradation_Trajectories.png) |
+| **Slide 14: Thermal Evolution** | `Slide14_Thermal_Evolution_Delta_T.png` | Thermal rise ($\Delta T = T_{\text{max}} - T_{\text{start}}$) vs. cycle count, tracking internal resistance growth. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide14_Thermal_Evolution_Delta_T.png) |
+| **Slide 15: Signal Decomposition** | `Slide15_Signal_Decomposition_Recovery_vs_Trend.png` | Decoupling long-term thermodynamic aging fade from high-frequency electrochemical recovery shocks. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide15_Signal_Decomposition_Recovery_vs_Trend.png) |
+| **Slide 16: Feature Correlations** | `Slide16_Feature_Correlation_Matrix.png` | Correlation heatmap linking voltage sag, thermal rise, duration, and instantaneous discharge capacity. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide16_Feature_Correlation_Matrix.png) |
+| **Slide 17: Degradation Stages** | `Slide17_Fleet_Degradation_Stage_Distribution.png` | Donut chart showing fleet distribution: Healthy (58.3%), Knee Transition (29.2%), Accelerated Aging (12.5%). | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide17_Fleet_Degradation_Stage_Distribution.png) |
+| **Slide 18: Data Provenance Fix** | `Slide18_Data_Provenance_Fix_Before_After.png` | Audit case study: Corrupted $0.05\text{ Ah}$ preliminary discharges causing $R^2 = -24.40$ vs. cleaned $R^2 = +0.883$ fix. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide18_Data_Provenance_Fix_Before_After.png) |
+| **Slide 19: Baseline ML Parity** | `Slide19_Baseline_ML_Parity_Scatter.png` | Ridge ($R^2 = -3.74$) and Random Forest ($R^2 = -3.48$, RUL MAE $\approx 107$) showing severe scatter on test cells. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide19_Baseline_ML_Parity_Scatter.png) |
+| **Slide 23: LSTM vs GRU** | `Slide23_LSTM_vs_GRU_Convergence_and_Parity.png` | Dual panel showing training/validation loss descent and tight 45° test parity alignment for LSTM and GRU. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide23_LSTM_vs_GRU_Convergence_and_Parity.png) |
+| **Slide 25: Measured Latency** | `Slide25_Verified_Measured_Inference_Latency.png` | Measured single-cycle latencies: LSTM ($0.16\text{ ms}$), TCN ($0.35\text{ ms}$), GRU ($0.95\text{ ms}$), RF ($12.9\text{ ms}$). | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide25_Verified_Measured_Inference_Latency.png) |
+| **Slide 27: Accuracy Benchmark** | `Slide27_Comprehensive_Model_Benchmark_R2_MAE.png` | Benchmark bar chart comparing $R^2$ and MAE, highlighting GRU ($R^2 = 0.86$, $\text{MAE} = 0.0279$) as top performer. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide27_Comprehensive_Model_Benchmark_R2_MAE.png) |
+| **Slide 28: Test Cell RUL Forecast** | `Slide28_Unseen_Test_Cell_RUL_Predictions_B0018.png` | Out-of-sample RUL cycle countdown predictions across cycle lifespans on unseen test cell NASA B0018. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide28_Unseen_Test_Cell_RUL_Predictions_B0018.png) |
+| **Slide 30: Residuals by Stage** | `Slide30_Residual_Error_Distribution_by_Stage.png` | Error distribution breakdown across Early Life, Mid-Life Regeneration, and Late-Life Knee Transition. | [View Image](https://github.com/givemehat/ONLINETIHIITG/blob/main/presentation_assets/Slide30_Residual_Error_Distribution_by_Stage.png) |
