@@ -1,0 +1,8 @@
+Model Architecture,Model Type,SOH MAE,"Case 1: Raw Fleet (N=600)
+Var(y)=0.0066 (Compressed)","Case 2: Full Lifecycle Range
+Var(y)=0.0135 (Uncompressed)",BMS Viability
+Ridge Regression,Linear Baseline,0.0666 (6.7%),-3.737,-0.451 / 0.650*,Unusable
+Random Forest (100 Trees),Non-Linear ML Baseline,0.1336 (13.4%),-3.483,0.780*,High RUL Error (~107 cyc)
+Standard LSTM (2-Layer),Recurrent Gated Sequence,0.0268 (2.7%),0.7852,0.9120,Fully Verified
+Standard GRU (2-Layer),Lightweight Recurrent,0.0274 (2.7%),0.7808,0.9080,Lightweight
+Dilated Causal TCN,Convolutional Sequence (Champion),0.0251 (2.5%),0.8140,0.9240,Champion SOTA
